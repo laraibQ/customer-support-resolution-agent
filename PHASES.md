@@ -1,6 +1,6 @@
 # Build log — Meridian Support Agent
 
-Original portfolio implementation for
+Implementation notes for
 https://github.com/laraibQ/customer-support-resolution-agent
 
 ## Phase 1 — Package skeleton ✅

@@ -1,4 +1,4 @@
-"""Streamlit demo UI for Meridian Support (original implementation)."""
+"""Streamlit UI for Meridian Support."""
 from __future__ import annotations
 
 import json
@@ -153,11 +153,11 @@ if "trace" not in st.session_state:
 st.markdown(
     f"""
 <div class="hero">
-  <p class="hero-kicker" style="color:#B7E0D2!important;">Portfolio project</p>
+  <p class="hero-kicker" style="color:#B7E0D2!important;">Customer support</p>
   <p class="hero-title" style="color:#FFFFFF!important;">Meridian Supply Support</p>
   <p class="hero-sub" style="color:#E4F2EC!important;">
     Resolution agent with policy retrieval, email-gated order lookup, return
-    intake, and human escalation — built for demos and interviews.
+    intake, and human escalation.
   </p>
   <div class="hero-chips">
     <span class="hero-chip" style="color:#fff!important;">LangChain tools</span>
@@ -171,7 +171,7 @@ st.markdown(
 )
 
 c1, c2, c3 = st.columns(3)
-c1.metric("Demo orders", len(orders))
+c1.metric("Orders", len(orders))
 c2.metric("Tickets", len(tickets))
 c3.metric("Returns", len(returns))
 
@@ -237,4 +237,4 @@ with right:
             "- Human ticket escalation"
         )
 
-st.caption("Meridian Supply portfolio demo — fictional data only. Secrets stay in local .env.")
+st.caption("Meridian Supply support — sample data only. API keys stay in local .env.")

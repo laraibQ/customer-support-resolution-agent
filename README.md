@@ -98,4 +98,6 @@ Reset `data/tickets.json` / `data/returns.json` before public screenshots.
 
 ## License
 
-MIT © laraibQ — see [LICENSE](LICENSE).
+This project is open-source under the MIT License.
+
+See [LICENSE](LICENSE) for the full terms (Copyright © 2026 laraibQ).

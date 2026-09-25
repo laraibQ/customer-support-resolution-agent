@@ -1,6 +1,6 @@
 # Architecture — Meridian Support Agent
 
-Original design for the Meridian Supply support resolution demo.
+Design for the Meridian Supply support resolution agent.
 
 ## Flow
 
