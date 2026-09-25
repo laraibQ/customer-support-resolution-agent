@@ -9,21 +9,12 @@ from typing import Optional
 
 from langchain_core.tools import tool
 
-from ingest import load_index
+from ingest import search_tfidf
 
 ROOT = Path(__file__).parent
 ORDERS_PATH = ROOT / "data" / "orders.json"
 TICKETS_PATH = ROOT / "data" / "tickets.json"
 RETURNS_PATH = ROOT / "data" / "returns.json"
-
-_kb = None
-
-
-def _get_kb():
-    global _kb
-    if _kb is None:
-        _kb = load_index()
-    return _kb
 
 
 def _load_json(path: Path, default):
@@ -35,6 +26,15 @@ def _load_json(path: Path, default):
 
 def _save_json(path: Path, payload) -> None:
     path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+
+
+def _format_hits(hits: list[tuple[str, str]]) -> str:
+    if not hits:
+        return "No relevant passages found in the knowledge base."
+    blocks = []
+    for i, (src, text) in enumerate(hits, 1):
+        blocks.append(f"[{i}] ({src})\n{text.strip()}")
+    return "\n\n".join(blocks)
 
 
 @tool
@@ -69,15 +69,7 @@ def kb_search(query: str, k: int = 4) -> str:
     "how do I…" — anything not specific to a single order. Returns the
     top `k` most relevant passages with their source filenames.
     """
-    kb = _get_kb()
-    hits = kb.similarity_search(query, k=k)
-    if not hits:
-        return "No relevant passages found in the knowledge base."
-    blocks = []
-    for i, doc in enumerate(hits, 1):
-        src = doc.metadata.get("source", "unknown")
-        blocks.append(f"[{i}] ({src})\n{doc.page_content.strip()}")
-    return "\n\n".join(blocks)
+    return _format_hits(search_tfidf(query, k=k))
 
 
 @tool
@@ -87,16 +79,10 @@ def refund_policy_search(query: str) -> str:
     Use when the customer's question is clearly about refunds, returns,
     return windows, refund timing, or non-returnable items.
     """
-    kb = _get_kb()
-    # FAISS metadata filter: keep only refund_policy.md chunks
-    hits = [
-        d
-        for d in kb.similarity_search(query, k=8)
-        if d.metadata.get("source") == "refund_policy.md"
-    ][:4]
+    hits = search_tfidf(query, k=4, source="refund_policy.md")
     if not hits:
         return "No relevant refund-policy passages found."
-    return "\n\n".join(d.page_content.strip() for d in hits)
+    return "\n\n".join(text.strip() for _, text in hits)
 
 
 @tool

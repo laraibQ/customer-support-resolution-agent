@@ -2,7 +2,7 @@
 
 ## Goal
 
-Demonstrate a production-shaped **customer support AI agent**: grounded RAG answers, identity-gated order lookup, return initiation, and confidence-aware human escalation — with a visible tool trace for demos/interviews.
+Demonstrate a production-shaped **customer support AI agent**: grounded retrieval answers, identity-gated order lookup, return initiation, and confidence-aware human escalation — with a visible tool trace for demos.
 
 ## System diagram
 
@@ -18,27 +18,40 @@ Customer message
          ▼
 ┌─────────────────┐
 │ LangChain agent │  create_agent + system prompt rules
-│ (ChatNebius or  │
-│  ChatOpenAI)    │
+│ Chat via Groq   │  default: openai/gpt-oss-20b
+│ (OpenAI/Nebius  │  optional via LLM_PROVIDER
+│  compatible)    │
 └────────┬────────┘
          │ tool calls
          ▼
 ┌──────────────────────────────────────────────┐
 │ Tools                                        │
-│  lookup_order      → data/orders.json        │
-│  kb_search         → FAISS (data/*.md)       │
-│  refund_policy_search → FAISS filtered       │
-│  start_return      → data/returns.json       │
-│  create_ticket     → data/tickets.json       │
+│  lookup_order         → data/orders.json     │
+│  kb_search            → TF-IDF (data/*.md)   │
+│  refund_policy_search → TF-IDF filtered      │
+│  start_return         → data/returns.json    │
+│  create_ticket        → data/tickets.json    │
 └──────────────────────────────────────────────┘
 ```
+
+Optional path: `EMBED_BACKEND=local` (or other non-`tfidf` values) builds/loads a FAISS index instead — see `ingest.py` and optional extra `.[faiss]`.
+
+## Providers (`config.py`)
+
+| `LLM_PROVIDER` | Chat | Default retrieval |
+| -------------- | ---- | ----------------- |
+| `groq` (default) | Groq OpenAI-compatible API | `tfidf` |
+| `openai` | OpenAI (or compatible `OPENAI_BASE_URL`) | `openai` embeddings unless overridden |
+| `nebius` | Nebius Token Factory | Nebius embeddings unless overridden |
+
+`EMBED_BACKEND` can override retrieval: `tfidf` (fast, no Torch), `local` / FAISS+HF, `openai`, `nebius`.
 
 ## Why this structure
 
 | Layer | Responsibility |
 | ----- | -------------- |
-| `config.py` | Provider switch (Nebius / OpenAI) so the project is runnable without vendor lock-in |
-| `ingest.py` | One-time embedding of Markdown KB into local FAISS |
+| `config.py` | Provider switch so demos are not locked to one vendor |
+| `ingest.py` | One-time KB build (TF-IDF pickle or FAISS) |
 | `tools.py` | Side-effectful business actions; keep agent logic out of prompts |
 | `agent.py` | System prompt + tool registration; escalation policy lives here |
 | `app.py` | Demo surface: chat + live tool trace + ticket/return sidebars |
@@ -52,13 +65,15 @@ The agent **must** call `create_ticket` when:
 - Damaged/wrong item needs photo review
 - A tool error cannot be fixed in one retry
 
-## Portfolio differentiators vs upstream demo
+## What changed vs the upstream starter
 
-1. Rebranded domain + warranty KB doc
+Documented differences (still a derivative — see [NOTICE](NOTICE)):
+
+1. Meridian Supply branding + warranty KB doc
 2. Extra `start_return` tool with eligibility checks
-3. Dual LLM/embeddings provider
-4. Tool-trace panel in the UI (interview-friendly)
-5. Architecture + resume bullets documented
+3. Groq-first config + TF-IDF default for fast local demos
+4. Tool-trace panel in the Streamlit UI
+5. Tests, pinned deps, and expanded documentation
 
 ## Upstream credit
 

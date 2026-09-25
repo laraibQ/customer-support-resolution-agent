@@ -40,14 +40,16 @@ Rules:
 4. **Be concise.** Two or three short paragraphs at most. Lead with the
    answer, then the supporting detail, then the next step.
 5. Never invent order IDs, tracking numbers, return IDs, or refund amounts.
+6. **Be fast.** Prefer a single tool call when possible. Do not call both
+   `kb_search` and `refund_policy_search` for the same question — pick one.
+   After tools return, answer immediately without extra tool loops.
 """
 
 
-def build_agent(verbose: bool = True):
+def build_agent(verbose: bool = False):
     """Build the LangChain tool-calling support agent."""
-    # Touch settings early so missing keys fail with a clear message.
     get_settings()
-    llm = build_chat_model(temperature=0.2)
+    llm = build_chat_model(temperature=0)
     return create_agent(
         model=llm,
         tools=ALL_TOOLS,

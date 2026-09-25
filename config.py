@@ -32,9 +32,9 @@ def get_settings() -> Settings:
             raise RuntimeError(
                 "GROQ_API_KEY is required when LLM_PROVIDER=groq"
             )
-        # Groq has no embeddings API — default to free local embeddings.
+        # Groq has no embeddings API — default to fast TF-IDF (no Torch cold start).
         if not embed_backend:
-            embed_backend = "local"
+            embed_backend = "tfidf"
         return Settings(
             provider="groq",
             api_key=api_key,
@@ -82,7 +82,7 @@ def get_settings() -> Settings:
     )
 
 
-def build_chat_model(temperature: float = 0.2):
+def build_chat_model(temperature: float = 0):
     settings = get_settings()
 
     if settings.provider in {"groq", "openai"}:
@@ -92,6 +92,9 @@ def build_chat_model(temperature: float = 0.2):
             "model": settings.chat_model,
             "api_key": settings.api_key,
             "temperature": temperature,
+            "max_tokens": 700,
+            "timeout": 45,
+            "max_retries": 1,
         }
         if settings.base_url:
             kwargs["base_url"] = settings.base_url
