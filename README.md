@@ -1,8 +1,8 @@
 # Meridian Supply — Customer Support Resolution Agent
 
-Portfolio project by [laraibQ](https://github.com/laraibQ): a support resolution
-agent with policy retrieval, email-gated order lookup, return intake, and human
-escalation.
+Support resolution agent by [laraibQ](https://github.com/laraibQ): answers policy
+questions from a local knowledge base, looks up orders with email verification,
+starts returns, and escalates to human tickets when needed.
 
 **Repo:** https://github.com/laraibQ/customer-support-resolution-agent
 
@@ -10,19 +10,19 @@ escalation.
 
 ---
 
-## What I built
+## Features
 
 - Tool-calling agent (not a single-prompt chatbot)
-- Local TF-IDF RAG over original Meridian policy docs
+- Local TF-IDF RAG over Meridian policy docs
 - Identity-gated order lookup
 - Return creation + human ticket escalation
 - Streamlit UI with live tool activity
 
-### Resume bullets
+### Highlights
 
 - Built a Meridian Supply support agent with LangChain, Groq, and TF-IDF RAG.
 - Implemented email-verified order lookup, return intake, and ticket escalation.
-- Shipped a Streamlit demo with tool-trace visibility for walkthroughs.
+- Shipped a Streamlit console with tool-trace visibility for walkthroughs.
 
 ---
 
