@@ -1,44 +1,42 @@
-# Architecture — Meridian Support Agent
+# Architecture
 
-Design for the Meridian Supply support resolution agent.
-
-## Flow
+## Request path
 
 ```
-Shopper message
-      │
-      ▼
- Streamlit (app.py) or CLI (main.py)
-      │
-      ▼
- LangChain agent (meridian_support.agent)
-  Chat model via Groq OpenAI-compatible API
-      │ tool calls
-      ▼
- meridian_support.tools
-  ├─ get_order_details     → store (orders.json)
-  ├─ search_policies       → kb TF-IDF index
-  ├─ search_returns_policy → kb filtered
-  ├─ open_return_request   → store (returns.json)
-  └─ escalate_to_human     → store (tickets.json)
+User message
+    │
+    ▼
+Streamlit (app.py) or CLI (main.py)
+    │
+    ▼
+LangChain agent (meridian_support.agent)
+Chat model via Groq OpenAI-compatible API
+    │ tool calls
+    ▼
+meridian_support.tools
+  ├─ get_order_details       → store (orders.json)
+  ├─ search_policies         → kb TF-IDF index
+  ├─ search_returns_policy   → kb filtered
+  ├─ open_return_request     → store (returns.json)
+  └─ escalate_to_human       → store (tickets.json)
 ```
 
-## Packages
+## Modules
 
-| Module | Role |
-| ------ | ---- |
-| `settings.py` | Env loading, Groq/OpenAI chat client |
-| `kb.py` | Markdown chunking + TF-IDF build/search |
-| `store.py` | Orders / tickets / returns persistence |
-| `tools.py` | LangChain `@tool` wrappers |
-| `agent.py` | System instructions + `create_agent` |
+| Module | Responsibility |
+| ------ | -------------- |
+| `settings.py` | Configuration and chat client |
+| `kb.py` | Markdown chunking and TF-IDF retrieval |
+| `store.py` | Orders, tickets, and returns persistence |
+| `tools.py` | LangChain tool wrappers |
+| `agent.py` | System prompt and agent construction |
 
 ## Escalation
 
-Call `escalate_to_human` when retrieval is weak, the shopper wants a person,
-fraud is alleged, or damaged goods need photo review.
+`escalate_to_human` is used when retrieval is insufficient, the shopper requests
+a person, fraud is alleged, or damaged goods need photo review.
 
 ## Retrieval
 
-Default `RETRIEVAL_BACKEND=tfidf` keeps demos fast (no Torch). Index path:
-`kb_index/tfidf.pkl` (gitignored).
+Default backend is TF-IDF (`RETRIEVAL_BACKEND=tfidf`). Index file:
+`kb_index/tfidf.pkl` (gitignored; built by `ingest.py` or on first search).

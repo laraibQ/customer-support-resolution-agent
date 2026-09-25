@@ -6,12 +6,11 @@ from meridian_support.agent import create_support_agent
 
 def main() -> None:
     agent = create_support_agent(debug=False)
-    print("Meridian Support CLI. Type 'exit' to quit.\n")
+    print("Meridian Support (exit to quit)\n")
     history: list[tuple[str, str]] = []
     while True:
         user = input("You: ").strip()
         if user.lower() in {"exit", "quit"}:
-            print("Bye.")
             break
         if not user:
             continue

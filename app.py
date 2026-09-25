@@ -9,7 +9,7 @@ from meridian_support.agent import create_support_agent
 from meridian_support.settings import load_settings
 from meridian_support import store
 
-DEMOS = [
+EXAMPLES = [
     ("Track order", "Where is order MG-4412? My email is alex@example.com."),
     ("Returns window", "How many days do I have to return an unused item?"),
     ("Start return", "Open a return for MG-4425, email jordan@example.com, reason: wrong size."),
@@ -102,8 +102,7 @@ try:
     settings = load_settings()
     runtime = f"{settings.provider} · {settings.chat_model}"
 except Exception as exc:  # noqa: BLE001
-    st.error(f"Config error: {exc}")
-    st.info("Copy env.example to .env and set GROQ_API_KEY.")
+    st.error(f"Configuration error: {exc}")
     st.stop()
 
 orders = store.list_orders()
@@ -160,10 +159,10 @@ st.markdown(
     intake, and human escalation.
   </p>
   <div class="hero-chips">
-    <span class="hero-chip" style="color:#fff!important;">LangChain tools</span>
-    <span class="hero-chip" style="color:#fff!important;">TF-IDF RAG</span>
+    <span class="hero-chip" style="color:#fff!important;">Policy</span>
+    <span class="hero-chip" style="color:#fff!important;">Orders</span>
+    <span class="hero-chip" style="color:#fff!important;">Returns</span>
     <span class="hero-chip" style="color:#fff!important;">Escalation</span>
-    <span class="hero-chip" style="color:#fff!important;">{runtime}</span>
   </div>
 </div>
     """,
@@ -175,20 +174,18 @@ c1.metric("Orders", len(orders))
 c2.metric("Tickets", len(tickets))
 c3.metric("Returns", len(returns))
 
-st.subheader("Try a scenario")
+st.subheader("Examples")
 cols = st.columns(4)
-for col, (label, text) in zip(cols, DEMOS):
+for col, (label, text) in zip(cols, EXAMPLES):
     with col:
-        if st.button(label, key=f"d_{label}", use_container_width=True):
+        if st.button(label, key=f"ex_{label}", use_container_width=True):
             st.session_state.pending = text
 
 left, right = st.columns([1.55, 1.0], gap="large")
 
 with left:
     st.subheader("Conversation")
-    st.caption("Ask about shipping, returns, warranty, or a sample order.")
-    if not st.session_state.messages:
-        st.info("Try a scenario button, or ask about MG-4412 with alex@example.com.")
+    st.caption("Shipping, returns, warranty, or order status.")
 
     for m in st.session_state.messages:
         with st.chat_message(m["role"]):
@@ -217,9 +214,9 @@ with left:
 
 with right:
     st.subheader("Tool activity")
-    st.caption("Last-turn tool calls.")
+    st.caption("Calls from the latest turn.")
     if not st.session_state.trace:
-        st.write("No activity yet.")
+        st.caption("—")
     else:
         for i, step in enumerate(st.session_state.trace, 1):
             if step["kind"] == "call":
@@ -228,13 +225,5 @@ with right:
             else:
                 with st.expander(f"{i}. result `{step['name']}`", expanded=False):
                     st.code(step["content"], language="json")
-    with st.container(border=True):
-        st.markdown("**Capabilities**")
-        st.markdown(
-            "- Policy retrieval\n"
-            "- Email-verified order lookup\n"
-            "- Return creation\n"
-            "- Human ticket escalation"
-        )
 
-st.caption("Meridian Supply support — sample data only. API keys stay in local .env.")
+st.caption("Meridian Supply")

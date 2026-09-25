@@ -1,3 +1,3 @@
-"""Meridian Support — original customer-support agent package."""
+"""Meridian Supply customer support agent."""
 
 __version__ = "1.0.0"

@@ -20,10 +20,9 @@ def _passages_to_text(passages: list[kb.Passage]) -> str:
 
 @tool
 def get_order_details(order_id: str, customer_email: Optional[str] = None) -> str:
-    """Fetch an order by ID (example: MG-4412).
+    """Fetch order status, items, and tracking by order ID.
 
-    When the shopper provides an email, require an exact match so another
-    customer's order is never revealed.
+    If customer_email is provided, it must match the order exactly.
     """
     order = store.get_order(order_id)
     oid = order_id.strip().upper()

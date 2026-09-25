@@ -1,32 +1,19 @@
 # Meridian Supply — Customer Support Resolution Agent
 
-Support resolution agent by [laraibQ](https://github.com/laraibQ): answers policy
-questions from a local knowledge base, looks up orders with email verification,
-starts returns, and escalates to human tickets when needed.
+Tool-calling support agent for Meridian Supply: policy retrieval, email-gated
+order lookup, return intake, and human escalation.
 
-**Repo:** https://github.com/laraibQ/customer-support-resolution-agent
-
-**Stack:** LangChain tool-calling · TF-IDF retrieval · Streamlit · Groq (default)
+**Stack:** LangChain · TF-IDF retrieval · Streamlit · Groq
 
 ![Meridian Supply Support UI](docs/ui.png)
 
----
-
 ## Features
 
-- Tool-calling agent (not a single-prompt chatbot)
-- Local TF-IDF RAG over Meridian policy docs
-- Identity-gated order lookup
-- Return creation + human ticket escalation
-- Streamlit UI with live tool activity
-
-### Highlights
-
-- Built a Meridian Supply support agent with LangChain, Groq, and TF-IDF RAG.
-- Implemented email-verified order lookup, return intake, and ticket escalation.
-- Shipped a Streamlit console with tool-trace visibility for walkthroughs.
-
----
+- LangChain tool-calling agent over Meridian policy docs
+- Local TF-IDF knowledge retrieval
+- Email-verified order lookup
+- Return creation and human ticket escalation
+- Streamlit console with per-turn tool activity
 
 ## Setup
 
@@ -34,15 +21,14 @@ starts returns, and escalates to human tickets when needed.
 git clone https://github.com/laraibQ/customer-support-resolution-agent.git
 cd customer-support-resolution-agent
 python -m venv .venv
-# Windows: .\.venv\Scripts\Activate.ps1
+source .venv/bin/activate   # Windows: .\.venv\Scripts\Activate.ps1
 pip install -e ".[dev]"
-copy env.example .env   # set GROQ_API_KEY
+cp env.example .env         # Windows: copy env.example .env
 python ingest.py
-streamlit run app.py --server.fileWatcherType none
-# or: python main.py
+streamlit run app.py
 ```
 
-Defaults (`meridian_support/settings.py`):
+CLI: `python main.py`
 
 | Variable | Default |
 | -------- | ------- |
@@ -50,48 +36,43 @@ Defaults (`meridian_support/settings.py`):
 | `GROQ_MODEL` | `openai/gpt-oss-20b` |
 | `RETRIEVAL_BACKEND` | `tfidf` |
 
----
+See [ARCHITECTURE.md](ARCHITECTURE.md) for system design.
 
-## Smoke tests
+## Deployment
+
+Host on a platform that runs a persistent Python process (Streamlit Community
+Cloud, Hugging Face Spaces, Railway, or Render). Set `GROQ_API_KEY` (and optional
+overrides) in the host secrets. The TF-IDF index is built on first search if
+`kb_index/` is missing.
+
+Streamlit Cloud main file: `app.py`.
+
+## Tests
 
 ```bash
 pytest -q
 ```
 
-Streamlit: click **Track order** and confirm tool activity.  
-CLI: ask “How long does ground shipping take?” then `exit`.
-
----
-
-## Demo prompts
+## Example queries
 
 - `Where is MG-4412? Email alex@example.com`
 - `How many days do I have to return unused items?`
 - `Open a return for MG-4425, jordan@example.com, wrong size`
 - `Package arrived cracked — escalate`
 
----
-
-## Layout
+## Project layout
 
 ```
-.
-├── app.py                 # Streamlit UI
-├── main.py                # CLI
-├── ingest.py              # Build TF-IDF index
-├── meridian_support/      # Agent package
-│   ├── settings.py
-│   ├── kb.py
-│   ├── store.py
-│   ├── tools.py
-│   └── agent.py
-├── data/                  # Policies + sample orders
-├── docs/ui.png            # App screenshot
-└── tests/
+app.py                 Streamlit UI
+main.py                CLI
+ingest.py              Build TF-IDF index
+meridian_support/      Agent package
+data/                  Policies and sample orders
+docs/ui.png
+requirements.txt
+tests/
 ```
-
----
 
 ## License
 
-This project is open-source under the MIT License.
+MIT

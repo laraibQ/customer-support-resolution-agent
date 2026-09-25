@@ -15,7 +15,7 @@ class Passage:
 
 
 def _split_markdown(text: str, max_chars: int = 550, overlap: int = 60) -> list[str]:
-    """Simple heading-aware splitter (no LangChain dependency for chunking)."""
+    """Heading-aware markdown chunker."""
     parts = re.split(r"(?m)(?=^##\s)", text.strip())
     chunks: list[str] = []
     for part in parts:
@@ -76,7 +76,7 @@ def _load() -> dict:
     if _CACHE is not None:
         return _CACHE
     if not TFIDF_PATH.exists():
-        raise FileNotFoundError(f"Missing index at {TFIDF_PATH}. Run: python -m meridian_support.kb")
+        build_index()
     _CACHE = pickle.loads(TFIDF_PATH.read_bytes())
     return _CACHE
 

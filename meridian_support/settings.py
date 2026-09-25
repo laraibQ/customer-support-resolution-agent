@@ -15,6 +15,34 @@ TFIDF_PATH = INDEX_DIR / "tfidf.pkl"
 load_dotenv(ROOT / ".env")
 
 
+def _apply_streamlit_secrets() -> None:
+    """Copy Streamlit secrets into the process environment when unset."""
+    try:
+        import streamlit as st
+
+        secrets = getattr(st, "secrets", None)
+        if not secrets:
+            return
+        for key in (
+            "GROQ_API_KEY",
+            "OPENAI_API_KEY",
+            "LLM_PROVIDER",
+            "GROQ_MODEL",
+            "OPENAI_MODEL",
+            "RETRIEVAL_BACKEND",
+            "EMBED_BACKEND",
+            "GROQ_BASE_URL",
+            "OPENAI_BASE_URL",
+        ):
+            if key in secrets and not os.getenv(key):
+                os.environ[key] = str(secrets[key])
+    except Exception:
+        return
+
+
+_apply_streamlit_secrets()
+
+
 @dataclass(frozen=True)
 class Settings:
     provider: str
@@ -31,7 +59,7 @@ def load_settings() -> Settings:
     if provider == "groq":
         key = os.getenv("GROQ_API_KEY", "").strip() or os.getenv("OPENAI_API_KEY", "").strip()
         if not key:
-            raise RuntimeError("Set GROQ_API_KEY in .env (LLM_PROVIDER=groq).")
+            raise RuntimeError("GROQ_API_KEY is required when LLM_PROVIDER=groq.")
         return Settings(
             provider="groq",
             api_key=key,
@@ -43,7 +71,7 @@ def load_settings() -> Settings:
     if provider == "openai":
         key = os.getenv("OPENAI_API_KEY", "").strip()
         if not key:
-            raise RuntimeError("Set OPENAI_API_KEY in .env (LLM_PROVIDER=openai).")
+            raise RuntimeError("OPENAI_API_KEY is required when LLM_PROVIDER=openai.")
         return Settings(
             provider="openai",
             api_key=key,

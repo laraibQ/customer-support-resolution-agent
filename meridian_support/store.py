@@ -1,4 +1,4 @@
-"""JSON-backed commerce store for demo orders, tickets, and returns."""
+"""JSON-backed store for orders, tickets, and returns."""
 from __future__ import annotations
 
 import json

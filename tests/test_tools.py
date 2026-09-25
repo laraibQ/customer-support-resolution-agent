@@ -1,4 +1,4 @@
-"""Tests for Meridian commerce tools (no API key)."""
+"""Unit tests for order, return, and escalation tools."""
 from __future__ import annotations
 
 import json
