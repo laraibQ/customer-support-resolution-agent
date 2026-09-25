@@ -1,41 +1,24 @@
-# Project history — Meridian Support Agent
+# Build log — Meridian Support Agent
 
-This repo started from the MIT-licensed
-[customer_support_resolution_agent](https://github.com/Arindam200/awesome-ai-apps/tree/main/advance_ai_agents/customer_support_resolution_agent)
-example in [awesome-ai-apps](https://github.com/Arindam200/awesome-ai-apps), then was customized for local demos and portfolio presentation. Upstream attribution: [NOTICE](NOTICE).
+Original portfolio implementation for
+https://github.com/laraibQ/customer-support-resolution-agent
 
-## Phase 0 — Bootstrap ✅
+## Phase 1 — Package skeleton ✅
 
-- Standalone project folder (repo root for this app)
-- Started from upstream starter sources (MIT)
+- `meridian_support` package: settings, kb, store, tools, agent
+- Streamlit + CLI entrypoints
 
-## Phase 1 — Architecture & skeleton ✅
+## Phase 2 — Domain content ✅
 
-- Modules: ingest → tools → agent → UI/CLI
-- Documented stack and escalation rules
-- Env template, gitignore, provider config
+- Original Meridian policy Markdown set
+- Sample order catalog (`MG-*` IDs)
 
-## Phase 2 — Customization ✅
+## Phase 3 — Demo UX ✅
 
-- Meridian Supply branding and expanded KB (+ warranty)
-- Providers: Groq (default), OpenAI, Nebius
-- Extra tool: `start_return`
-- Streamlit UI with tool-call visibility
+- Branded Streamlit console with scenarios + tool activity
+- Groq default + TF-IDF retrieval for low latency
 
-## Phase 3 — Runnable path ✅
+## Phase 4 — Quality ✅
 
-- venv + editable install
-- `.env` for Groq + `EMBED_BACKEND=tfidf` (gitignored secrets)
-- `python ingest.py` builds TF-IDF index
-- Streamlit / CLI entrypoints
-
-## Phase 4 — Documentation ✅
-
-- README, ARCHITECTURE, NOTICE, LICENSE
-- Honest skills / resume framing (derivative, not from-scratch)
-
-## Phase 5 — Verify & harden ✅
-
-- Tool unit tests (order / return / ticket)
-- Documented smoke-test path for Streamlit + CLI
-- Latency: TF-IDF path avoids Torch cold-start on RAG tools
+- Unit tests for order gate, returns eligibility, tickets
+- Pinned dependencies, MIT license

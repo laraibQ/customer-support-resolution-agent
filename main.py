@@ -1,16 +1,17 @@
-"""Terminal chat with the Meridian Supply support agent."""
-from agent import build_agent
+"""CLI entry for Meridian Support."""
+from __future__ import annotations
+
+from meridian_support.agent import create_support_agent
 
 
 def main() -> None:
-    agent = build_agent(verbose=False)
-    print("Meridian Supply support agent ready. Type 'exit' to quit.\n")
-
+    agent = create_support_agent(debug=False)
+    print("Meridian Support CLI. Type 'exit' to quit.\n")
     history: list[tuple[str, str]] = []
     while True:
         user = input("You: ").strip()
         if user.lower() in {"exit", "quit"}:
-            print("Goodbye")
+            print("Bye.")
             break
         if not user:
             continue

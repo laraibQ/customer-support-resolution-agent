@@ -1,55 +1,33 @@
-# Meridian Supply — Frequently Asked Questions
+# Meridian Supply — Help Center
 
 ## Account
 
-**How do I reset my password?**
-Visit https://meridiansupply.example/account/reset and enter the email
-associated with your account. A reset link is valid for 30 minutes.
+**Reset password**
+Use https://meridiansupply.example/reset. Enter the account email; the link
+expires in 25 minutes.
 
-**How do I change the email on my account?**
-Go to *Account → Profile → Email* and confirm the change from both the
-old and new inboxes. The change takes effect after both confirmations.
+**Update email**
+Account → Profile → Email. Confirm from both inboxes before the change sticks.
 
-**Can I have multiple shipping addresses?**
-Yes. You can save up to 10 addresses under *Account → Addresses* and pick
-one per order at checkout.
+**Saved addresses**
+You may store up to 8 shipping addresses and pick one at checkout.
 
 ## Orders
 
-**How do I track my order?**
-Open *Orders* in your account, click the order, and use the *Track
-package* link. Tracking becomes active within 24 hours of shipment.
+**Tracking**
+Orders → select the order → Track. Carriers usually activate tracking within
+one business day after handoff.
 
-**Can I change the shipping address after ordering?**
-Only while the order status is `processing`. Once it moves to `shipped`,
-the address is locked and you must contact the carrier directly.
+**Change address**
+Allowed only while status is `processing`. After `shipped`, contact the carrier.
 
-**How do I cancel an order?**
-Orders in `processing` can be cancelled instantly from the order page.
-Orders in `shipped` cannot be cancelled — refuse delivery or start a
-return after it arrives.
+**Cancel**
+`processing` orders cancel instantly online. `shipped` orders cannot be
+cancelled; refuse delivery or open a return after arrival.
 
 ## Payments
 
-**Which payment methods do you accept?**
-Visa, Mastercard, American Express, Apple Pay, Google Pay, and PayPal.
+We accept major cards, Apple Pay, Google Pay, and PayPal.
 
-**My card was charged but the order failed. What now?**
-Failed-order charges are authorizations, not captures, and drop off your
-statement within 5–7 business days. If the charge persists, contact us
-with the order ID.
-
-## Shipping
-
-**How long does delivery take?**
-Standard: 3–5 business days. Express: 1–2 business days. International:
-7–14 business days. See the *Shipping Policy* for full details.
-
-**Do you ship internationally?**
-Yes — to 42 countries. Customs duties are the buyer's responsibility.
-
-## Warranty
-
-**Do products include a warranty?**
-Most hard goods include a 1-year limited warranty against manufacturing
-defects. See the *Warranty Policy* for coverage details and exclusions.
+Authorization holds for failed checkouts typically clear in 3–7 business days.
+If a hold remains, contact support with the attempted order reference.
