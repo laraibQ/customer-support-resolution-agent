@@ -8,6 +8,8 @@ starts returns, and escalates to human tickets when needed.
 
 **Stack:** LangChain tool-calling · TF-IDF retrieval · Streamlit · Groq (default)
 
+![Meridian Supply Support UI](docs/ui.png)
+
 ---
 
 ## Features
@@ -84,15 +86,9 @@ CLI: ask “How long does ground shipping take?” then `exit`.
 │   ├── tools.py
 │   └── agent.py
 ├── data/                  # Policies + sample orders
+├── docs/ui.png            # App screenshot
 └── tests/
 ```
-
----
-
-## Privacy
-
-Sample orders/tickets/returns are fictional. Do not commit `.env` or real PII.
-Reset `data/tickets.json` / `data/returns.json` before public screenshots.
 
 ---
 
