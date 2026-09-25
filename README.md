@@ -36,7 +36,28 @@ CLI: `python main.py`
 | `GROQ_MODEL` | `openai/gpt-oss-20b` |
 | `RETRIEVAL_BACKEND` | `tfidf` |
 
-See [ARCHITECTURE.md](ARCHITECTURE.md) for system design.
+## Architecture
+
+```
+User message
+    │
+    ▼
+Streamlit (app.py) / CLI (main.py)
+    │
+    ▼
+LangChain agent (meridian_support.agent)
+    │  Groq (OpenAI-compatible)
+    │ tool calls
+    ▼
+meridian_support.tools
+  ├─ get_order_details       → orders.json
+  ├─ search_policies         → TF-IDF index
+  ├─ search_returns_policy   → returns.md
+  ├─ open_return_request     → returns.json
+  └─ escalate_to_human       → tickets.json
+```
+
+Details: [ARCHITECTURE.md](ARCHITECTURE.md)
 
 ## Deployment
 
