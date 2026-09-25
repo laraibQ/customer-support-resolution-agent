@@ -1,0 +1,77 @@
+{
+  "MS-20481": {
+    "customer_email": "alex@example.com",
+    "status": "shipped",
+    "items": [
+      {"sku": "MS-MUG-01", "name": "Meridian Trail Mug", "qty": 2, "price": 16.99},
+      {"sku": "MS-TEE-BLK-M", "name": "Meridian Tee (Black, M)", "qty": 1, "price": 28.0}
+    ],
+    "subtotal": 61.98,
+    "shipping": 0.0,
+    "total": 61.98,
+    "placed_at": "2026-04-28T14:12:00Z",
+    "shipped_at": "2026-04-29T18:40:00Z",
+    "carrier": "UPS",
+    "tracking": "1Z999AA10123456784",
+    "estimated_delivery": "2026-05-03"
+  },
+  "MS-20482": {
+    "customer_email": "priya@example.com",
+    "status": "processing",
+    "items": [
+      {"sku": "MS-HOODIE-NVY-L", "name": "Meridian Hoodie (Navy, L)", "qty": 1, "price": 68.0}
+    ],
+    "subtotal": 68.0,
+    "shipping": 4.99,
+    "total": 72.99,
+    "placed_at": "2026-05-06T09:30:00Z",
+    "shipped_at": null,
+    "carrier": null,
+    "tracking": null,
+    "estimated_delivery": null
+  },
+  "MS-20483": {
+    "customer_email": "jordan@example.com",
+    "status": "delivered",
+    "items": [
+      {"sku": "MS-BOTTLE-22", "name": "Meridian Bottle 22oz", "qty": 1, "price": 32.0}
+    ],
+    "subtotal": 32.0,
+    "shipping": 4.99,
+    "total": 36.99,
+    "placed_at": "2026-04-15T11:02:00Z",
+    "shipped_at": "2026-04-15T20:11:00Z",
+    "carrier": "USPS",
+    "tracking": "9400111899223197428347",
+    "estimated_delivery": "2026-04-19",
+    "delivered_at": "2026-04-19T15:48:00Z"
+  },
+  "MS-20490": {
+    "customer_email": "sam@example.com",
+    "status": "cancelled",
+    "items": [
+      {"sku": "MS-CAP-RED", "name": "Meridian Cap (Red)", "qty": 1, "price": 24.0}
+    ],
+    "subtotal": 24.0,
+    "shipping": 4.99,
+    "total": 28.99,
+    "placed_at": "2026-05-02T08:00:00Z",
+    "cancelled_at": "2026-05-02T08:14:00Z"
+  },
+  "MS-20501": {
+    "customer_email": "morgan@example.com",
+    "status": "delivered",
+    "items": [
+      {"sku": "MS-PACK-28L", "name": "Meridian Daypack 28L", "qty": 1, "price": 129.0}
+    ],
+    "subtotal": 129.0,
+    "shipping": 0.0,
+    "total": 129.0,
+    "placed_at": "2026-03-01T10:00:00Z",
+    "shipped_at": "2026-03-01T16:20:00Z",
+    "carrier": "FedEx",
+    "tracking": "794612345678",
+    "estimated_delivery": "2026-03-04",
+    "delivered_at": "2026-03-04T12:05:00Z"
+  }
+}
