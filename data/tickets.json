@@ -1,1 +1,11 @@
-[]
+[
+  {
+    "ticket_id": "TCK-EF4E3734",
+    "summary": "Package arrived broken, needs visual review",
+    "customer_email": "",
+    "order_id": null,
+    "priority": "high",
+    "status": "open",
+    "created_at": "2026-09-25T21:31:08+00:00"
+  }
+]

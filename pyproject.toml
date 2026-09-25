@@ -1,7 +1,7 @@
 [project]
 name = "meridian-support-resolution-agent"
 version = "0.2.0"
-description = "Portfolio customer support agent: LangChain tools, RAG, escalation (Nebius or OpenAI)"
+description = "Portfolio customer support agent: LangChain tools, RAG, escalation (Groq / Nebius / OpenAI)"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
@@ -10,9 +10,11 @@ dependencies = [
     "langchain-nebius>=0.1.0",
     "langchain-openai>=0.3.0",
     "langchain-community>=0.4",
+    "langchain-huggingface>=0.1.0",
     "langchain-text-splitters>=1.0",
     "langgraph>=1.0",
     "faiss-cpu>=1.8.0",
+    "sentence-transformers>=3.0.0",
     "streamlit>=1.36.0",
     "python-dotenv>=1.0.1",
     "pydantic>=2.7.0",

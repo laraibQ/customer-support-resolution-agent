@@ -18,11 +18,11 @@ Portfolio project adapted from [awesome-ai-apps / customer_support_resolution_ag
 - Extra tool: `start_return`
 - Streamlit UI shows tool calls (demo-ready)
 
-## Phase 3 — Runnable path 🔄
+## Phase 3 — Runnable path ✅
 - ✅ venv + `pip install -e .`
-- ✅ `.env` created from `env.example` (needs real API key)
-- ⏳ `python ingest.py` (blocked on API key)
-- ⏳ Streamlit / CLI live run (blocked on API key)
+- ✅ `.env` configured for Groq + local embeddings (gitignored)
+- ✅ `python ingest.py` — FAISS index built
+- ⏳ Streamlit UI — run `streamlit run app.py` locally
 
 ## Phase 4 — Documentation ✅
 - Portfolio README + ARCHITECTURE.md
@@ -30,4 +30,4 @@ Portfolio project adapted from [awesome-ai-apps / customer_support_resolution_ag
 
 ## Phase 5 — Verify & harden 🔄
 - ✅ Tool smoke tests (order / return / ticket) without LLM
-- ⏳ End-to-end demo prompts with LLM
+- 🔄 Groq e2e chat smoke test

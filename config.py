@@ -11,39 +11,72 @@ load_dotenv()
 
 @dataclass(frozen=True)
 class Settings:
-    provider: str  # "nebius" | "openai"
+    provider: str  # "groq" | "openai" | "nebius"
     api_key: str
     chat_model: str
+    embed_backend: str  # "local" | "openai" | "nebius"
     embed_model: str
     base_url: str | None
 
 
 def get_settings() -> Settings:
-    provider = os.getenv("LLM_PROVIDER", "nebius").strip().lower()
+    provider = os.getenv("LLM_PROVIDER", "groq").strip().lower()
+    embed_backend = os.getenv("EMBED_BACKEND", "").strip().lower()
+
+    if provider == "groq":
+        api_key = (
+            os.getenv("GROQ_API_KEY", "").strip()
+            or os.getenv("OPENAI_API_KEY", "").strip()
+        )
+        if not api_key:
+            raise RuntimeError(
+                "GROQ_API_KEY is required when LLM_PROVIDER=groq"
+            )
+        # Groq has no embeddings API — default to free local embeddings.
+        if not embed_backend:
+            embed_backend = "local"
+        return Settings(
+            provider="groq",
+            api_key=api_key,
+            chat_model=os.getenv("GROQ_MODEL", "openai/gpt-oss-20b"),
+            embed_backend=embed_backend,
+            embed_model=os.getenv(
+                "LOCAL_EMBED_MODEL", "sentence-transformers/all-MiniLM-L6-v2"
+            ),
+            base_url=os.getenv(
+                "GROQ_BASE_URL", "https://api.groq.com/openai/v1"
+            ),
+        )
 
     if provider == "openai":
         api_key = os.getenv("OPENAI_API_KEY", "").strip()
         if not api_key:
             raise RuntimeError("OPENAI_API_KEY is required when LLM_PROVIDER=openai")
+        if not embed_backend:
+            embed_backend = "openai"
         return Settings(
             provider="openai",
             api_key=api_key,
             chat_model=os.getenv("OPENAI_MODEL", "gpt-4o-mini"),
+            embed_backend=embed_backend,
             embed_model=os.getenv("OPENAI_EMBED_MODEL", "text-embedding-3-small"),
             base_url=os.getenv("OPENAI_BASE_URL") or None,
         )
 
-    # Default: Nebius Token Factory (OpenAI-compatible)
+    # Nebius Token Factory
     api_key = os.getenv("NEBIUS_API_KEY", "").strip()
     if not api_key:
         raise RuntimeError(
             "NEBIUS_API_KEY is required when LLM_PROVIDER=nebius "
-            "(or set LLM_PROVIDER=openai and OPENAI_API_KEY)."
+            "(or set LLM_PROVIDER=groq / openai)."
         )
+    if not embed_backend:
+        embed_backend = "nebius"
     return Settings(
         provider="nebius",
         api_key=api_key,
         chat_model=os.getenv("NEBIUS_MODEL", "Qwen/Qwen3-30B-A3B"),
+        embed_backend=embed_backend,
         embed_model=os.getenv("NEBIUS_EMBED_MODEL", "Qwen/Qwen3-Embedding-8B"),
         base_url=os.getenv("NEBIUS_BASE_URL", "https://api.tokenfactory.nebius.com/v1/"),
     )
@@ -51,7 +84,8 @@ def get_settings() -> Settings:
 
 def build_chat_model(temperature: float = 0.2):
     settings = get_settings()
-    if settings.provider == "openai":
+
+    if settings.provider in {"groq", "openai"}:
         from langchain_openai import ChatOpenAI
 
         kwargs = {
@@ -74,14 +108,24 @@ def build_chat_model(temperature: float = 0.2):
 
 def build_embeddings():
     settings = get_settings()
-    if settings.provider == "openai":
+
+    if settings.embed_backend == "local":
+        from langchain_huggingface import HuggingFaceEmbeddings
+
+        return HuggingFaceEmbeddings(
+            model_name=os.getenv(
+                "LOCAL_EMBED_MODEL", settings.embed_model
+            )
+        )
+
+    if settings.embed_backend == "openai" or settings.provider == "openai":
         from langchain_openai import OpenAIEmbeddings
 
         kwargs = {
             "model": settings.embed_model,
             "api_key": settings.api_key,
         }
-        if settings.base_url:
+        if settings.base_url and settings.provider == "openai":
             kwargs["base_url"] = settings.base_url
         return OpenAIEmbeddings(**kwargs)
 

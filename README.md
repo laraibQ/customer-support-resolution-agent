@@ -2,7 +2,7 @@
 
 Portfolio project: a SaaS-style support agent that answers policy questions from a RAG knowledge base, looks up orders with email verification, starts returns, and escalates to human tickets when confidence is low.
 
-**Stack:** LangChain tool-calling · FAISS RAG · Streamlit · Nebius **or** OpenAI
+**Stack:** LangChain tool-calling · FAISS RAG · Streamlit · **Groq** (default) / Nebius / OpenAI
 
 Adapted from [awesome-ai-apps / customer_support_resolution_agent](https://github.com/Arindam200/awesome-ai-apps/tree/main/advance_ai_agents/customer_support_resolution_agent) (MIT) and customized for portfolio use. See [ARCHITECTURE.md](ARCHITECTURE.md) and [PHASES.md](PHASES.md).
 
@@ -33,7 +33,7 @@ Adapted from [awesome-ai-apps / customer_support_resolution_agent](https://githu
 | Returns | `start_return` for delivered orders |
 | Escalation | `create_ticket` → `data/tickets.json` |
 | Tool transparency | Live tool-trace panel in Streamlit |
-| Provider flexibility | `LLM_PROVIDER=nebius` or `openai` |
+| Provider flexibility | `LLM_PROVIDER=groq` (default) / `openai` / `nebius` |
 
 ---
 
@@ -54,7 +54,7 @@ Adapted from [awesome-ai-apps / customer_support_resolution_agent](https://githu
 ### Prerequisites
 
 - Python 3.10+
-- API key: [Nebius Token Factory](https://tokenfactory.nebius.com/) **or** OpenAI
+- Free [Groq](https://console.groq.com/) API key (default), or OpenAI / Nebius
 
 ### 1. Install
 
@@ -72,8 +72,12 @@ pip install -e .
 
 ```bash
 copy env.example .env
-# Edit .env — set NEBIUS_API_KEY  OR  LLM_PROVIDER=openai + OPENAI_API_KEY
+# Edit .env — set GROQ_API_KEY (kept local; never commit .env)
 ```
+
+Default stack:
+- **Chat:** Groq `openai/gpt-oss-20b`
+- **Embeddings:** local `sentence-transformers/all-MiniLM-L6-v2` (free, no API)
 
 ### 3. Build knowledge base (once)
 
